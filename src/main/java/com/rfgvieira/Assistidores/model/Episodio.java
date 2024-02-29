@@ -1,16 +1,30 @@
 package com.rfgvieira.Assistidores.model;
 
+import jakarta.persistence.*;
+
 import java.time.DateTimeException;
 import java.time.LocalDate;
 
+@Entity
+@Table(name = "episodios")
 public class Episodio {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+
     private Integer numTemporada;
     private String titulo;
     private Integer numEpisodio;
     private Double avaliacao;
     private LocalDate dataLancamento;
 
-    public Episodio(Integer numeroTemporada, DadosEpisodio dadosEpisodio){
+    @ManyToOne
+    private Serie serie;
+
+    public Episodio(){}
+
+    public Episodio(Integer numeroTemporada, DadosEpisodio dadosEpisodio) {
         this.numTemporada = numeroTemporada;
         this.titulo = dadosEpisodio.titulo();
         this.numEpisodio = dadosEpisodio.numEpisodio();
@@ -21,15 +35,21 @@ public class Episodio {
             this.avaliacao = 0.0;
         }
 
-        try{
+        try {
             this.dataLancamento = LocalDate.parse(dadosEpisodio.data());
-        } catch (DateTimeException e){
+        } catch (DateTimeException e) {
             this.dataLancamento = null;
         }
 
     }
 
+    public Long getId() {
+        return id;
+    }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public Integer getNumTemporada() {
         return numTemporada;
@@ -71,14 +91,16 @@ public class Episodio {
         this.dataLancamento = dataLancamento;
     }
 
+    public Serie getSerie() {
+        return serie;
+    }
+
+    public void setSerie(Serie serie) {
+        this.serie = serie;
+    }
+
     @Override
     public String toString() {
-        return
-                "titulo='" + titulo +
-                ", numTemporada=" + numTemporada +
-                ", numEpisodio=" + numEpisodio +
-                ", avaliacao=" + avaliacao +
-                ", dataLancamento=" + dataLancamento
-                ;
+        return "titulo='" + titulo + ", numTemporada=" + numTemporada + ", numEpisodio=" + numEpisodio + ", avaliacao=" + avaliacao + ", dataLancamento=" + dataLancamento;
     }
 }
