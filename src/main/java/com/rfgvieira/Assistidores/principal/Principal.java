@@ -16,6 +16,7 @@ public class Principal {
     private final ConverteDados conversor = new ConverteDados();
     private final SerieRepository serieRepositorio;
 
+    private Optional<Serie> serieBuscada;
 
 
     public Principal(SerieRepository serieRepositorio) {
@@ -35,6 +36,9 @@ public class Principal {
                     6 - Buscar Top 5 Séries
                     7 - Buscar Série Por Categoria
                     8 - Buscar Série Por Temporada
+                    9 - Buscar Episódio por Trecho
+                    10 - Top 5 Episodios Da Serie
+                    11 - Buscar Episodios Depois de Data
                     0 - Sair
                     """;
 
@@ -68,6 +72,15 @@ public class Principal {
                     break;
                 case 8:
                     buscarSeriesPorTemporadas();
+                    break;
+                case 9:
+                    buscarEpisodioPorTrecho();
+                    break;
+                case 10:
+                    buscarTop5EpisodiosPorSeries();
+                    break;
+                case 11:
+                    buscarEpisodiosDepoisDeData();
                     break;
                 case 0:
                     System.out.println("Encerrando...");
@@ -122,7 +135,7 @@ public class Principal {
 
             List<Episodio> episodios = temporadaList.stream()
                     .flatMap(t -> t.episodioList().stream()
-                        .map(e -> new Episodio(t.numTemporada(), e))
+                            .map(e -> new Episodio(t.numTemporada(), e))
                     ).collect(Collectors.toList());
 
             serieEncontrada.setEpisodios(episodios);
@@ -143,10 +156,10 @@ public class Principal {
     private void buscarSerieTitulo() {
         System.out.print("\nDigite a série que deseja procurar: ");
         var nomeSerie = sc.nextLine();
-        Optional<Serie> serieEncontrada = serieRepositorio.findByTituloContainsIgnoreCase(nomeSerie);
-        if(serieEncontrada.isPresent()){
-            System.out.println("Dados da Série: " + serieEncontrada.get());
-        } else{
+        serieBuscada = serieRepositorio.findByTituloContainsIgnoreCase(nomeSerie);
+        if (serieBuscada.isPresent()) {
+            System.out.println("Dados da Série: " + serieBuscada.get());
+        } else {
             System.out.println("Série não Encontrada!");
         }
 
@@ -181,9 +194,41 @@ public class Principal {
         var tempMax = sc.nextLine();
         System.out.print("Digite a avalição mínima: ");
         var nota = sc.nextLine();
-        List<Serie> seriesEncontradas = serieRepositorio.findByTotalTempLessThanEqualAndAvaliacaoGreaterThanEqual(Integer.parseInt(tempMax), Double.valueOf(nota));
+        List<Serie> seriesEncontradas = serieRepositorio.seriesPorTemporadaAvaliacao(Integer.parseInt(tempMax), Double.valueOf(nota));
         System.out.println("\nSéries Encontradas:");
         seriesEncontradas.forEach(System.out::println);
+    }
+
+    private void buscarEpisodioPorTrecho() {
+        System.out.print("Digite o trecho do nome de um episodio: ");
+        var nomeTrecho = sc.nextLine();
+        List<Episodio> episodiosFiltrados = serieRepositorio.episodiosPorTrecho(nomeTrecho);
+        episodiosFiltrados.forEach(e ->
+                System.out.printf("Série: %s Temporada: %s - Episódio: %s - %s\n",
+                        e.getSerie().getTitulo(), e.getNumTemporada(), e.getNumEpisodio(), e.getTitulo()));
+    }
+
+    private void buscarTop5EpisodiosPorSeries() {
+        buscarSerieTitulo();
+        if (serieBuscada.isPresent()) {
+            Serie serie = serieBuscada.get();
+            List<Episodio> topEpisodios = serieRepositorio.topEpisodiosPorSerie(serie);
+            topEpisodios.forEach(e ->
+                    System.out.printf("Série: %s Temporada: %s - Episódio: %s - %s - Avaliacao: %f\n ",
+                            e.getSerie().getTitulo(), e.getNumTemporada(), e.getNumEpisodio(), e.getTitulo(), e.getAvaliacao()));
+        }
+    }
+
+    private void buscarEpisodiosDepoisDeData() {
+        buscarSerieTitulo();
+        if (serieBuscada.isPresent()) {
+            Serie serie = serieBuscada.get();
+            System.out.print("Digite o ano desejado: ");
+            var ano = sc.nextLine();
+            List<Episodio> seriesEncontradas = serieRepositorio.episodiosSerieAposData(serie, Integer.parseInt(ano));
+            seriesEncontradas.forEach(System.out::println);
+        }
+
     }
 
 }

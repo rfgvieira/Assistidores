@@ -1,8 +1,10 @@
 package com.rfgvieira.Assistidores.repository;
 
 import com.rfgvieira.Assistidores.model.Categoria;
+import com.rfgvieira.Assistidores.model.Episodio;
 import com.rfgvieira.Assistidores.model.Serie;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 import java.util.Optional;
@@ -16,5 +18,15 @@ public interface SerieRepository extends JpaRepository<Serie,Long> {
 
     List<Serie> findByGenero(Categoria categoria);
 
-    List<Serie> findByTotalTempLessThanEqualAndAvaliacaoGreaterThanEqual(int tmeporadas, Double avalicao);
+    @Query( "select s from Serie s where s.totalTemp <= :temporadas and s.avaliacao >= :avaliacao")
+    List<Serie> seriesPorTemporadaAvaliacao(int temporadas, Double avaliacao);
+
+    @Query("SELECT e FROM Serie s JOIN s.episodios e WHERE e.titulo ILIKE %:nomeTrecho%")
+    List<Episodio> episodiosPorTrecho(String nomeTrecho);
+
+    @Query("SELECT e FROM Serie s JOIN s.episodios e WHERE s = :serie ORDER BY e.avaliacao DESC LIMIT 5")
+    List<Episodio> topEpisodiosPorSerie(Serie serie);
+
+    @Query("SELECT e FROM Serie s JOIN s.episodios e WHERE s = :serie AND YEAR(e.dataLancamento) >= :ano")
+    List<Episodio> episodiosSerieAposData(Serie serie, int ano);
 }
