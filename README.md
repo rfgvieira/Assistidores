@@ -14,8 +14,8 @@ API para ser consumida para uma plataforma de séries
 
 **IDE:** IntelliJ
 
-## Project Structure
-The project includes three main packages, each one divided in sub-packages:
+## Estrutura do Projeto
+Utilizando a arquitetura MVC o projeto ficou com  a seguinte estrutura:
 
 - **`config`:** Contém configuração da aplicação.
 - **`controller`:** Contem as rotas para serem consumidas
@@ -25,7 +25,7 @@ The project includes three main packages, each one divided in sub-packages:
 - **`repository`:** Contém a comunicação com o banco de dados
 - **`service`:** Contém arquivos relacionados a rede
 
-## Install
+## Configuração
 
 Abra o IntelliJ e rode o código no terminal:
 
@@ -33,14 +33,9 @@ Abra o IntelliJ e rode o código no terminal:
   git clone https://github.com/rfgvieira/Auau.git
 ```
     
-## Running the App
+## Rodar
 
 Connect an Android device to your development machine.
-
-### Android Studio
-
-* Select `Run -> Run 'app'` (or `Debug 'app'`) from the menu bar
-* Select the device you wish to run the app on and click 'OK'
 
 
 
