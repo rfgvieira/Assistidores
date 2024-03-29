@@ -27,15 +27,26 @@ Utilizando a arquitetura MVC o projeto ficou com  a seguinte estrutura:
 
 ## Configuração
 
-Abra o IntelliJ e rode o código no terminal:
-
+### IntelliJ
+* Selecione `File` na barra de menu
+* Depois Selecione `New` e em seguida `Project from Version Control...`
+* No campo `URL` cole o seguinte trecho:
 ```bash
-  git clone https://github.com/rfgvieira/Auau.git
+  https://github.com/rfgvieira/Assistidores.git
 ```
+Após isso você terá que criar o banco de dados no PostgreSQL, depois de criado volte ao Intellij e abra o arquivo `application.properties` localizado na pasta `resources` e configure os seguintes campos com os dados do banco que você acabou de criar:
+* `spring.datasource.url`
+* `spring.datasource.username`
+* `spring.datasource.password`
+
     
 ## Rodar
 
-Connect an Android device to your development machine.
+### IntelliJ
+* Clique onde está escrito `Current File` e depois em `Edit Configurations...`
+* Após isso clique em `Add new...` -> `Application` 
+* No campo `Main Class` clique no ícone e selecione `AssistidoresApplication` e clique em `OK`
+* Após isso para rodar a aplicação é só clicar no ícone de rodar ou debugar
 
 
 
