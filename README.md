@@ -39,6 +39,8 @@ Após isso você terá que criar o banco de dados no PostgreSQL, depois de criad
 * `spring.datasource.username`
 * `spring.datasource.password`
 
+Obs.: O banco necessita ser populado após a migração
+
     
 ## Rodar
 
@@ -48,6 +50,28 @@ Após isso você terá que criar o banco de dados no PostgreSQL, depois de criad
 * No campo `Main Class` clique no ícone e selecione `AssistidoresApplication` e clique em `OK`
 * Após isso para rodar a aplicação é só clicar no ícone de rodar ou debugar
 
+## Rotas
+
+### `/series`
+* Contém dados de todas as séries
+
+### `/series/top5`
+* Obtém as 5 séries com melhor avaliação
+
+### `/series/lancamentos`
+* Obtém as 5 séries que teve episódios mais recentes
+
+### `/series/{id}`
+* Obtém uma séries especificada pelo id dela
+
+ ### `/series/{id}/temporadas/todas`
+* Obtém os episodios de todas as temporadas da série
+
+### `/series/{id}/temporadas/{num}`
+*  Obtém os episodios da temporada especificada de uma série
+
+### `/series/categoria/{nome}`
+*  Obtém todas as séries de uma determinada categorias
 
 
 ## Author
